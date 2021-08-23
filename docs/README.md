@@ -15,15 +15,16 @@
 # 目录
 > [toc]
 
+<!-- TEMP: 记得删掉这个目录 -->
 
 # 什么是 Trident？
-Trident 是一个由 Energyxxer 制作的 Minecraft 函数（mcfunction）语言，它在原版 mcfunction 语法的基础上添加了更多语法糖与有用的功能，无论是简单的原版模组项目还是成熟的地图都可以使用 Trident 来帮助开发。用 Trident 语言编写的代码最终都能被编译为一个数据包，供您分发您的创作。
+Trident 是一个由 Energyxxer 制作的 Minecraft 函数（mcfunction）语言，它在原版函数语法的基础上添加了更多语法糖与有用的功能，无论是简单的原版模组项目还是成熟的地图都可以使用 Trident 来帮助开发。用 Trident 语言编写的代码最终都能被编译为一个数据包，供您分发您的创作。
 
 **Trident 能做哪些原版函数不能做的事情？**  
-很多 mcfunction 的语法是繁杂而重复的，所以有的时候你会编写很多函数，但只是为了制作一个基本的模块，而 Trident 则可以通过添加编译时的变量、常数，甚至自定义实体和物品来解决这些问题。
+很多 Minecraft 函数的语法是繁杂而重复的，所以有的时候你会编写很多函数，但只是为了制作一个基本的模块，而 Trident 则可以通过添加编译时的变量、常数，甚至自定义实体和物品来解决这些问题。
 
 # Trident 项目结构
-要使用 Trident 协助开发，你需要将你的文件整理成类似于数据包与资源包的文件夹结构中。在你的项目文件夹中，通常需要有一个 `datapack` 文件夹作为数据包、一个 `resources` 文件夹作为资源包，和一个名为 `.tdnproj` 的 JSON 文件，它用于表示这个 Trident 项目。
+要使用 Trident 协助开发，你需要将你的文件整理成类似于数据包与资源包的文件夹结构中。在你的项目文件夹中，通常需要有一个 `datapack` 文件夹作为数据包，一个 `resources` 文件夹作为资源包，和一个名为 `.tdnproj` 的 JSON 文件，它用于表示这个 Trident 项目，包含一些实用的设置。
 
 所有 Trident 代码将会被置于数据包的任意命名空间中的函数文件夹下。如果你是初学者，那么一个数据包的结构如下：
 
@@ -44,13 +45,14 @@ datapack
 └── pack.mcmeta
 ```
 
-你仍然可以直接将你的 `.mcfunction` 文件放置在 `[namespace]/functions` 文件夹中。唯一不同的是 Trident 的文件后缀名为 `.tdn` 而不是 `.mcfunction`。
+你仍然可以直接将你的 mcfunction 文件放置在 `[namespace]/functions` 文件夹中。唯一不同的是 Trident 的文件后缀名为 `.tdn` 而不是 `.mcfunction`。
 
-# 格式
+# 文件格式
 
 Trident 语言的代码文件使用 `.tdn` 作为文件后缀名。在一个 Trident 文件里，你可以像在 mcfunction 文件里一样直接添加命令。大部分 `.mcfunction` 文件中可以使用的命令在 `.tdn` 文件中也可以使用，但有几点不同的是：
 
 1. 以 `$` 开头的虚拟玩家的名称将会代表另一种东西（在下面的章节将会讲解）。
+
 2. [`/particle`](https://minecraft.fandom.com/zh/wiki/%E5%91%BD%E4%BB%A4/particle) 命令的偏移参数（`delta`）只能使用实数，不能使用相对坐标或绝对坐标。
 
 Trident 函数与 Minecraft 函数不同的一点是空格的使用。Trident 中的命令可以使用多余的空格，甚至可以在参数中添加空行（只要意义明确）。这意味这你可以将子命令或NBT一类的内容放在单独的行内，而放在同一行中也不会有任何的不同。例如：
@@ -79,13 +81,13 @@ execute
 
 如果命令中使用了任何变量，那么这条命令将只能获取到变量当前的状态。这使得 Trident 文件中的运行顺序很重要，因此你需要使用 Trident 中控制运行顺序的功能来确保代码的运行顺序正确。
 
-# 文件属性
+# 文件编译预处理指令
 
-你可以在一个 `.tdn` 文件的最开头定义文件的属性。属性以 `@` 符号开头，下面列出了所有可以使用的属性：
+你可以在一个 `.tdn` 文件的最开头设定文件的编译预处理指令，它们以 `@` 符号开头，下面列出了所有可用的指令：
 
 1. `@ on compile` 表示该文件应该只在编译时被利用。这代表它不应该被编译器编译为一个 `.mcfunction` 文件，而是应该在其他文件被编译之前运行。这些文件通常被用于定义记分版项目，或进行其他的一些初始化操作。
 
-2. `@ tag <tag name>` 使该函数在被编译时附带有指定的函数标签，参数 `<tag name>` 应为一个有效的资源路径；如果缺失命名空间，将被默认为 `minecraft`。这个属性不能被用于仅编译的文件。示例：
+2. `@ tag <tag name>` 使该函数在被编译时附带有指定的函数标签，参数 `<tag name>` 应为一个有效的资源路径；如果缺失命名空间，将被默认为 `minecraft`。这个属性不能被用于仅编译时的文件。示例：
 
     ```tdn
     @ tag load
@@ -93,24 +95,29 @@ execute
     @ tag custom:tag
     ```
 
-3. `@ meta_tag <tag_name>` 用于将该文件用指定的元标签进行标记，参数 `<tag_name>` 应为一个有效的资源路径。和 `@ tag` 属性不同，这不会创建一个函数标签，并且可以被用在仅编译的文件上，这在反射中很有用（见 [`Reflection.getFilesWithMetaTag`](TODO)）。示例：
+3. `@ meta_tag <tag name>` 用于给该文件标记上指定的元标签，参数 `<tag_name>` 应为一个有效的资源路径。和 `@ tag` 属性不同，这不会创建一个函数标签，并且可以被用在仅编译时的文件上，这在反射中很有用（见 [`Reflection.getFilesWithMetaTag`](TODO)）。示例：
 
     ```tdn
     @ meta_tag trident:advancement_reward
     ```
 
-4. `@ require <file>` 表示该函数应在指定文件之后运行，这也将导入指定文件中的所有局部变量（见[变量可访问性](TODO)）。参数 `<file>` 应为一个有效的资源路径，就像您普通地访问被它生成的函数一样。
+4. `@ require <file>` 表示该函数依赖指定的文件，应在指定文件之后运行，这也将导入指定文件中的所有局部变量（见 [变量可访问性](TODO)）。参数 `<file>` 应为一个有效的资源路径，就像您普通地访问被它生成的函数一样。
 
-5. `@ priority <number>` 将设置该文件的优先级。拥有更高优先级的文件将在拥有更低优先级的文件之前运行。
+5. `@ priority <number>` 用于设置该文件的优先级，优先级更高的文件将在优先级更低的文件之前运行。值得注意的是，`@ on compile` 和 `@ require` 指令都能具有比 `@ priority` 更高的优先级。举例来说，一个仅编译时、优先级为 `2` 的文件，将在一个普通的、优先级为 `6` 的文件之前运行；一个优先级为 `9` 的文件将在一个依赖于此的、优先级为 `12` 的文件之前运行。
 
-5. `@ priority <number>` Sets this file’s priority number to the real number specified. Higher priority files run before lower priority files. Note that `@ on compile` and `@ require` directives all have higher precedence over the `@ priority` directive. A file with priority 2 will run before a priority 6 if the former is compile-only and the latter is not. A file with priority 9 will run before a file with priority 12 if the former requires the latter.
-6. ``@ language_level <level>` Overrides the project language level for this particular file (see [Language Levels]()).
-7. ``@ metadata <object>`` Sets this file's metadata to the given object (see [Reflection.getMetadata]()).
-8. ``@ breaking` If this directive is set, any uncaught exceptions in this file will halt the execution of the rest of the file, similarly to how a non-recovering try block behaves. (see [Control Flow>try-catch]()). This is particularly useful for files that primarily contain compile-time instructions.
-9. ``@ using_plugin <plugin name>`` If this directive is set, all custom commands from the specified plugin can be used in this file without the namespace. (see [Custom Commands]())
+6. `@ language_level <level>` 用于指定该文件的语言等级，并覆盖项目设置（见 [语言等级](TODO)）。
+
+7. `@ metadata <object>` 用于设置该文件的元数据为指定的对象（见 [`Reflection.getMetadata`](TODO)）。
+
+8. `@ breaking` 被设置后，任何未被捕获到的异常就会立即终止文件的执行，这类似于 `try` 代码块的行为（见 [流程控制/`try-catch`](TODO)）。这个指令对那些主要包含仅编译时代码的文件特别有用。
+
+9. `@ using_plugin <plugin name>` 被设置后，所有来自指定文件的自定义命令可以被直接用于这个文件而不用附带命名空间（见 [自定义命令](TODO)），类似于静态导入了其中的所有自定义命令。
  
-# Language Levels
-Trident is designed to be very close to vanilla functions, and avoids standing in the way between the user and the commands it outputs. However, some of the language features are too abstract and far from Minecraft commands to still allow that level of control. In order to logically separate these features, Language Levels come into play.
+# 语言等级
+
+我们希望 Trident 与原版函数的差别不会太大，并且尽量避免让用户无法理解编译器最终生成的命令。然而，有些语言功能太过于抽象，它们与 Minecraft 命令相差甚远，导致我们无法达到上面的期望。为了解决这个问题，在逻辑上分离这些功能，语言等级开始发挥作用。
+
+语言等级
 
 The language level is a numerical setting that can be changed in the project setting or in a per-file basis. The lowest language level only contains the features that are the most straight-forward, and doesn't allow features that will generate a large volume of commands without user control. The highest language level enables all features of the language, including those which involve many commands, functions and files that the user doesn't have direct control over.
 
