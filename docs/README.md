@@ -18,7 +18,7 @@
 <!-- TEMP: 记得删掉这个目录 -->
 
 # 什么是 Trident？
-Trident 是一个由 Energyxxer 制作的 Minecraft 函数（mcfunction）语言，它在原版函数语法的基础上添加了更多语法糖与有用的功能，无论是简单的原版模组项目还是成熟的地图都可以使用 Trident 来帮助开发。用 Trident 语言编写的代码最终都能被编译为一个数据包，供您分发您的创作。
+Trident 是一个由 Energyxxer 制作的 Minecraft 函数（mcfunction）语言，它在原版函数语法的基础上添加了更多语法糖与有用的特性，无论是简单的原版模组项目还是成熟的地图都可以使用 Trident 来帮助开发。用 Trident 语言编写的代码最终都能被编译为一个数据包，供您分发您的创作。
 
 **Trident 能做哪些原版函数不能做的事情？**  
 很多 Minecraft 函数的语法是繁杂而重复的，所以有的时候你会编写很多函数，但只是为了制作一个基本的模块，而 Trident 则可以通过添加编译时的变量、常数，甚至自定义实体和物品来解决这些问题。
@@ -75,11 +75,13 @@ execute
 
 # 重要提示
 
-如果你把 Trident 语言理解为一门单独的语言，而不是一个函数预处理器，那么 Trident 的一些功能就更容易被理解。一个文件由一些语句组成，它们一部分是命令，而另一部分是代码。
+如果你把 Trident 语言理解为一门单独的语言，而不是一个函数预处理器，那么 Trident 的一些特性就更容易被理解。一个文件由一些语句组成，它们一部分是命令，一部分是[指令](TODO)。
 
-对于函数中的每一条命令，Minecraft 函数和 Trident 的语法是相同的，并且最终的命令会被直接放入当前编写的函数文件，不加以任何改变。代码很类似，但他们不是直接添加一行命令，而是更改程序的状态（例如修改变量）。
+> 译注：此处指令的原文是 `Instructions`，指的是 Trident 中的一些不同于原版函数的特殊语法，与命令不同。
 
-如果命令中使用了任何变量，那么这条命令将只能获取到变量当前的状态。这使得 Trident 文件中的运行顺序很重要，因此你需要使用 Trident 中控制运行顺序的功能来确保代码的运行顺序正确。
+对于函数中的每一条命令，Minecraft 函数和 Trident 的语法是相同的，并且最终的命令会被直接放入当前编写的函数文件，不加以任何改变；指令很类似，但他们不是直接添加一行命令，而是更改程序的状态（例如修改变量）。
+
+如果命令中使用了任何变量，那么这条命令将只能获取到变量当前的状态。这使得 Trident 文件中的运行顺序很重要，因此你需要使用 Trident 中控制运行顺序的特性来确保代码的运行顺序正确。
 
 # 文件编译预处理指令
 
@@ -115,22 +117,22 @@ execute
  
 # 语言等级
 
-我们希望 Trident 与原版函数的差别不会太大，并且尽量避免让用户无法理解编译器最终生成的命令。然而，有些语言功能太过于抽象，它们与 Minecraft 命令相差甚远，导致我们无法达到上面的期望。为了解决这个问题，在逻辑上分离这些功能，语言等级开始发挥作用。
+我们希望 Trident 与原版函数的差别不会太大，同时也尽量避免让用户无法理解编译器最终生成的命令。然而，有些语言特性太过于抽象，它们与 Minecraft 命令相差甚远，导致我们无法达到上面的期望。为了解决这个问题，在逻辑上分离这些特性，我们加入了语言等级。
 
-语言等级
+语言等级是一个数值设定，可以在项目设置中更改，也可以在文件开头特别指定该文件的语言等级。最低的语言等级仅包含最简单、直观的特性，禁用在没有用户控制的情况下可能会生成大量命令的特性；最高的语言等级将启用该语言的全部特性，包括那些涉及到用户无法直接控制的许多命令、函数和文件的特性。
 
-The language level is a numerical setting that can be changed in the project setting or in a per-file basis. The lowest language level only contains the features that are the most straight-forward, and doesn't allow features that will generate a large volume of commands without user control. The highest language level enables all features of the language, including those which involve many commands, functions and files that the user doesn't have direct control over.
+以下是当前可用的语言等级以及它们所包含的特性：
 
-Following is a list of language levels and their features:
+1. 基本的函数预处理功能（原版命令、[变量](TODO)、[计分板项目](TODO)、[自定义实体](TODO)、简单的[自定义物品](TODO)等）
 
-1. Basic pre-processing of functions (vanilla commands, [variables](), [objectives](), [custom entities](), basic [custom items](), etc.)
-2. Basic Trident commands ([tag update]()) and [`using` instruction](). These will usually turn into more than one command each, and short extra functions may be created to properly implement the expected behavior.
+2. 基本的 Trident 命令（[`tag update`](TODO)）和 [`using` 指令](TODO)。这些命令或指令在编译时会输出为多行命令，并且可能还会有额外的短函数生成用以实现它们。
+
 3. [Custom item events]() and [game logger](). These will usually create several functions with many commands each, which may introduce some execution time and space overhead. However, these functions will only generate once the first usage of the feature is found, and further uses of the feature will either reference a generated function or append to one.
 
 The language level can be specified using the `language-level` property in the project configuration file .tdnproj, or per file, using the `@ language_level` [file directive](#文件属性).
 
 
-# Implicit execute
+# 隐式 `execute`
 
 Trident lets you omit `execute` and `run` keywords from your commands entirely. The previous snippet can be simplified to the following command:
 ```tdn
@@ -152,7 +154,7 @@ execute store result score PLAYER_COUNT global if entity @a
 
 *The `execute` keyword cannot be omitted in this case!*
 
-# Objectives
+# 记分板项目
 
 Trident allows you to declare scoreboard objectives on the fly, and it takes care of the commands that add them. Define objectives using the `define objective` instruction:
 ```tdn
@@ -178,7 +180,7 @@ var raw_command = "futurecommand @a"
 /${raw_command + " minecraft:future_block"}
 ```
 
-## Raw Modifiers
+## `raw` 修饰符
 
 You may also want to output an execute modifier as-is, while using Trident syntax for the chained command. This is why you can use the `raw` execute modifier for that, which takes a string literal or an interpolation block. Example:
 ```tdn
@@ -186,11 +188,11 @@ raw "if block ~ ~-1 ~ minecraft:future_block" tp @s ~ 127 ~
 ```
 This also works with interpolation blocks and lists of strings.
 
-# Inner Function Syntax
+# 内部函数
 
 Creating a file for every function you want in a datapack can often be tedious, and difficult to maintain. This is why Trident implements several ways you can create functions within functions.
 
-## Via Define Instruction:
+## 通过 `define` 关键字
 You can define an inner function via the define instruction, with the specified name. The name is a resource location, which can be relative to the parent function, or an absolute path in a non-minecraft namespace. Example:
 ```tdn
 #at: tdndemo:inner_functions.tdn
@@ -201,7 +203,7 @@ define function inner {
 #inner is created at tdndemo:inner_functions/inner
 ```
 
-## Via function command:
+## 通过 `function` 命令
 You can define an inner function inside the function command, which will create the function and immediately call it. Example:
 ```tdn
 # at: tdndemo:inner_functions.tdn
@@ -224,7 +226,7 @@ The number at the end will increase for every anonymous inner function created i
  
 There is also another way to create inner functions, but we’ll discuss it in the [Interpolation Values]() section.
 
-## Relative Resource Locations
+## 相对资源路径
 
 Wherever you can use a resource location (typically function references), Trident lets you use function paths relative to the function currently being written, starting with a forward slash (`/`). Example:
 ```tdn
@@ -239,13 +241,13 @@ function tdndemo:relative_functions
 ```
 The second example (with a single slash) is particularly useful for recursive functions.
 
-# Introduction to Custom Objects
+# 自定义对象
 Trident allows you to abstract the process of creating a custom entity or item, using its custom object features. This section will describe features common to both entity and items.
 
-## Object Inner Functions
+## 函数内部对象
 Inside a custom entity or item body you may define functions that are logically tied to it.
 
-### An object's directory
+### 对象的文件夹
 An object's inner functions need to be created under a directory, and so both the path and name of the file that declares that object affects where those functions will be.
 For objects whose name is the same as the file that created it, inner functions will be created relative to the function that created it. Example:
 ```tdn
@@ -269,7 +271,7 @@ define entity town_guard minecraft:iron_golem {
 ```
 The function `idle` will be created in function whose resource location is: `mypack:entities/guards/town_guard/idle`.
 
-### Function declarations
+### 函数声明
 The most basic form of object inner functions is the following:
 ```tdn
 function {
@@ -300,7 +302,7 @@ Object inner functions may have extra syntax options depending on the object typ
 
 ----
 
-# Custom Entities
+# 自定义实体
 
 Trident lets you simplify the process of creating "new" entity types. A custom entity starts with a definition specifying its base type (what vanilla entity type it uses), its default NBT data, its passengers, and functions it may want to run. After declaration, you can use its name in place of the `summon` command entity type, or `type`= selector argument. Here's an example declaration:
 ```tdn
@@ -366,7 +368,7 @@ summon minecraft:iron_golem ~ ~ ~ {
 
 Trident uses tags to distinguish custom entity types apart. They are `trident-entity`, followed by the namespace it was declared in, and the name of the custom entity, all separated by dots.
 
-## Custom Entity Declaration
+## 自定义实体声明
 
 Custom entities are defined by two identifying properties: a name, and a base type. Depending on whether these properties are set, the custom entity will behave differently.
 
@@ -405,7 +407,7 @@ Custom entities are defined by two identifying properties: a name, and a base ty
 4.  **Entity Components** (Has a name but no base type)
     Entity components serve as a way to add functionality to specific entities, regardless of their entity type. More about Entity Components in another section.
 
-## Custom Entity Body
+## 自定义实体结构体
 - Variable Declarations.
 - `default name <text_component>`
     (Named entities and components only)
@@ -431,9 +433,9 @@ Custom entities are defined by two identifying properties: a name, and a base ty
     ```
 - Inner functions (See next section)
 
-## Custom Entity Functions
+## 自定义实体函数
 Custom entities and entity components support inner functions, as described in the [Object Inner Functions]() section.
-### Ticking Functions
+### 循环函数
 Within custom entity bodies, you may specify that an inner function should run every tick on entities of that type. This is done via the `ticking` keyword before the `function` keyword.
 Example:
 ```tdn
@@ -483,7 +485,7 @@ define entity guard minecraft:iron_golem {
 ```
 This will create a self-scheduling function tagged with `#minecraft:tick`, one for each unique time interval used in the project.
 
-# Entity Components
+# 实体组件
 Entity components are an extension of the custom entity system, which allows adding functionality to arbitrary entities via tags. Entity components have all the features and functionality of a named entity.
 Entity components can be added to an entity's definition or after the `summon` command entity type, as well as a Trident-exclusive `component=` selector argument. Here's an example declaration:
 ```tdn
@@ -508,8 +510,8 @@ The `invisible` declaration also defines a `reapply` function that runs every 10
 
 Just like named custom entities, entity components are represented by a tag on the entity. For entity components, they are `trident-component`, followed by the namespace it was declared in, and the name of the component, all separated by dots.
 
-## Usage
-### Summon
+## 用途
+### 实体生成
 There are many ways to use an entity component. The most simple way is through the `summon` command. To give a summoned entity components, you may put the names of the components, separated by commas, between square braces after the entity name. Example:
 ```tdn
 summon pig[invisible]
@@ -522,7 +524,7 @@ summon minecraft:pig ~ ~ ~ {
     ]
 }
 ```
-### Component add/remove command
+### `component (add|remove)` 命令
 Another way to use entity components is by adding/removing them, just like tags. To do so, use the Trident-exclusive `component` command:
 ```tdn
 component @e[type=pig] remove invisible
@@ -532,7 +534,7 @@ component @e[type=cow] add invisible
 tag @e[type=pig] remove trident-component.mypack.invisible
 tag @e[type=cow] add trident-component.mypack.invisible
 ```
-### Component selector argument
+### `component` 选择器参数
 You can filter entities based on which components they have, using the Trident-exclusive `component` selector argument:
 ```tdn
 as @e[component=invisible] say I'm invisible
@@ -542,7 +544,7 @@ as @e[component=!invisible] say I'm not invisible
 as @e[tag=trident-component.mypack.invisible] say I'm invisible
 as @e[tag=!trident-component.mypack.invisible] say I'm not invisible
 ```
-### Entity Inheritance
+### 实体继承
 
 You may also use components in the declaration of a named custom entity, or even another entity component. Do this by using the implements keyword at the end of the entity/component declaration header with the names of the components, separated by commas:
 ```tdn
@@ -582,7 +584,7 @@ summon minecraft:iron_golem  ~ ~ ~ {
 }
 ```
 
-# Abstract Entity Events
+# 抽象生物事件
 Trident offers a form of polymorphism for entity functions, in the form of Abstract Entity Events.
 Abstract entity events are special functions whose behavior is incomplete by default. The function's behavior is entirely dependent on the type of entity that executes the function. The event can then be called through a custom `event` command, which simply tells the entities to run their own implementation of the event.
 
@@ -638,7 +640,7 @@ as <entity> function <event_dispatch_function>
 
 ----
 
-# Custom Items
+# 自定义物品
 Trident lets you simplify the process of creating "new" item types and modifying existing ones. A custom item starts with a definition specifying its base type (what vanilla item type it uses), its default NBT data, its name, lore, and functions it may want to run. After declaration, you can use its name in place of the `give`/`clear`/`replaceitem`/etc. commands' item type. Here's an example declaration:
 ```tdn
 # file: mypack:items/teleport_wand.tdn
@@ -704,7 +706,7 @@ clear @a minecraft:carrot_on_a_stick{
 ```
 Trident uses a `TridentCustomItem` item tag to distinguish custom item types apart. The value of that tag is determined by hashing the string formed after combining the namespace and the item name together.
 
-## Custom Item Declaration
+## 自定义物品声明
 
 Just like Custom Entities, Custom Items are defined by two identifying properties: a name, and a base type. Depending on whether these properties are set, the custom entity will behave differently.
 
@@ -732,7 +734,7 @@ Just like Custom Entities, Custom Items are defined by two identifying propertie
 
 There are no item equivalents of entities' wildcard entities and entity components.
 
-## Custom Item Body
+## 自定义物品结构体
 - [Variable Declarations]().
 - `default name <text_component>`
     (Named items only)
@@ -746,10 +748,10 @@ There are no item equivalents of entities' wildcard entities and entity componen
     Changes the entity's base NBT to contain the tags in the given compound (via a merge operation).
 - Inner functions (See next section)
 
-## Custom Item Functions
+## 自定义物品函数
 Custom items support inner functions, as described in the [Object Inner Functions]() section.
 
-### Item Event Functions
+### 物品事件函数
 ***[LL3]*** *This feature may only be used if the project's language level is 3*  
 
 Within custom item bodies, you may specify that an inner function should run whenever a scoreboard criteria event is fired from that item. This is done via the `on` keyword, followed by the type of event it should be fired from.
@@ -806,8 +808,8 @@ Player named Foo throws a `$demo` snowball. Chat:
 
 ----
 
-# Command Syntax Additions
-## Blocks
+# 特殊命令语法
+## 方块
 You can use interpolation blocks wherever a block is required. However, you may also want to  overwrite some of the values of the block in that variable. You can do so, simply by appending a blockstate and/or a tag compound after the first interpolation block. Example:
 ```tdn
 var blockVar = block<chest[facing=east]{Lock:"Key"}>
@@ -834,7 +836,7 @@ setblock ~ ~ ~ chest[facing=north]{Lock:"Different Key"}
 Just like in the vanilla syntax, blockstates or NBT segments in a block literal should be attached directly to the name, without whitespace in between.
 
 
-## Items
+## 物品
 Trident adds a shorthand for CustomModelData for items. Simply append a hash sign (#), followed by the custom model data number, to the end of the item name, and before the NBT (if any). Example:
 ```tdn
 give @a stick#5
@@ -856,7 +858,7 @@ give @a stick{HideFlags:63,CustomModelData:8}
 Just like in the vanilla syntax, NBT segments in an item literal should be attached directly to the name, without whitespace in between.
 
 
-## New-Entity literal
+## 实体定义
 Trident uses a common format to refer to an entity type to create. It contains information about the entity type to spawn, its entity components and its NBT data, where the latter two are optional. The entity type can also be a custom entity.
 This format is used in the `summon` command, `using summon` and `default passengers` in a custom entity.
 Examples:
@@ -881,7 +883,7 @@ summon ${nbt<{id:"minecraft:skeleton",Glowing:1b}>}
 summon minecraft:skeleton ~ ~ ~ {Glowing:1b}
 ```
 
-## Selectors
+## 选择器
 You can use interpolation blocks wherever an entity is required. However, you may want to add more selector arguments to the selector. You can do so, simply by appending selector arguments after the first interpolation block. 
 **Note**: This will **add** the given selector arguments, and it will not override old ones if that selector type is repeatable. It will also try to merge `scores` and `advancements` arguments. Example:
 ```tdn
@@ -896,7 +898,7 @@ tp @e[type=pig,tag=selected,tag=new,scores={scoreA=5,scoreB=3}] @s
 ```
 Just like in the vanilla syntax, a selector argument block in a selector should be attached directly to the selector header, without whitespace in between.
 
-### score: isset
+### `score: isset`
 Trident adds a shorthand to the score execute argument that evaluates to true if a score is set, by matching it against the entire integer range. Example:
 ```tdn
 if entity @s[scores={id=isset}] say ID is set
@@ -905,8 +907,8 @@ if entity @s[scores={id=isset}] say ID is set
 if entity @s[scores={id=..2147483647}] say ID is set
 ```
 
-## Commands
-### set
+## 命令
+### `set`
 Trident adds a shorthand command that unifies operations to and from scores and NBT.
 The syntax is `set <pointer: target> <operator> <pointer: source>`.
 Alternatively, the source pointer can be replaced with an NBT value.
@@ -971,7 +973,7 @@ data modify entity @s Variant set from block -30000 0 0 RecordItem.tag.nextVaria
 data modify entity @s HandItems[0] set value {id:"minecraft:bow",Count:1b}
 ```
 
-### tag update
+### `tag update`
 ***[LL2]*** *This feature may only be used if the project's language level is at least 2*
 Trident adds a shorthand for removing a tag from all entities and reapplying it only to specific entities. Example:
 ```tdn
@@ -981,16 +983,16 @@ tag @e[nbt={OnGround:1b}] update onGround
 tag @e remove onGround
 tag @e[nbt={OnGround:1b}] add onGround
 ```
-### component
+### `component`
 This component command is similar in use to the tag command, but its purpose is to add and remove custom entity components. See [Entity Components > Component add/remove command]().
 
-### event
+### `event`
 This event command is used to invoke an event on certain entities. See [Abstract Entity Events]().
 
-### summon
+### `summon`
 The summon command syntax has been modified so that it uses New-Entity literals. As a result, you can append a list of entity components to add to the summoned entity, as well as specify the NBT of the spawned entity while omitting the coordinates. See [Command Syntax Additions > New-Entity literal](). The default syntax for the summon command is still valid, however.
 
-### expand
+### `expand`
 The `expand` command applies the same set of modifiers to multiple commands in a block.
 Syntax:
 ```tdn
@@ -1014,7 +1016,7 @@ if entity @e[tag=!assigned] function try_assign_3
 ```
 It's advised you only use this when you expect the condition to be invalidated somewhere in the block to stop the other commands from running. If you want all the commands in the block to run if the condition is met, consider using functions instead.
 
-### gamelog
+### `gamelog`
 ***[LL3]*** *This feature may only be used if the project's language level is 3*
 Trident adds a runtime equivalent of the [log instruction](). This lets you send debug messages to select people, containing information about the execution context of the command. The syntax is `gamelog <info|debug|warning|error|fatal> <value>`.
 The different severities correspond to an integer, and a message of a certain severity will only be shown to players whose `tdn_logger` score is at least the severity number.
@@ -1048,8 +1050,8 @@ You may customize the style of these messages via the project configuration file
 
 The gamelog messages show a variety of information in addition to the description, such as the execution time, message severity, function file, command sender, execution position and project name. Note that some of these may or may not be present depending on the project configuration.
 
-## Execute Modifiers
-### if/unless score: isset
+## `execute` 修饰器
+### `(if|unless) score: isset`
 Trident adds a shorthand to the score condition modifier that evaluates to true if a score is set, by matching it against the entire integer range. Example:
 ```tdn
 if score @s id isset say ID is set
@@ -1057,7 +1059,7 @@ if score @s id isset say ID is set
 # Equivalent to:
 if score @s id matches ..2147483647 say ID is set
 ```
-### if/unless selector
+### `(if|unless) selector`
 Trident adds a shorthand to the entity condition modifier. You can omit the entity keyword if you use a selector. Example:
 ```tdn
 if @s[tag=valid] say Valid
@@ -1065,15 +1067,15 @@ if @s[tag=valid] say Valid
 # Equivalent to:
 if entity @s[tag=valid] say Valid
 ```
-### raw
+### `raw`
 The execute modifier version of verbatim commands. Takes a string literal or an interpolation block (containing either a string or a list of strings) as a parameter. See [Raw Modifiers](). Example:
 ```tdn
 raw "if block ~ ~-1 ~ minecraft:future_block" tp @s ~ 127 ~
 ```
 
-# Instructions
+# 指令
 Instructions in Trident typically alter the state of the program during compilation, or generate many commands or functions at once. As such, they cannot be used with execute modifiers, as they are not commands.
-## log
+## `log`
 The log instruction is used to display information after the project has finished compiling. In command-line based systems, this may be in the form of text in the console. In the official [Trident UI](), these logs will appear in a panel at the bottom of the program, which allow you to quickly jump to the location it was logged from.
 There are different types of messages you can log: `info`, `warning` and `error`.
 None of these will halt the execution of the program, but the latter (`error`) will prevent the output data pack and resource pack from generating.
@@ -1086,8 +1088,8 @@ Example:
 log info "Added  " + i + " to the list"
 ```
 
-## using
-### using tag
+## `using`
+### `using tag`
 ***[LL2]*** *This feature may only be used if the project's language level is at least 2*
 Tags on entities are often used temporarily to target a specific entity without changing the context. This requires adding and removing the tag from the entity. Trident adds an instruction that makes this process easier. The using tag instruction runs a specific block after adding a tag to the entity given, and automatically adds the tag remove command at the end. Note that the tag is removed from all entities at the end, so don't use a tag that is used permanently somewhere else.
 Syntax:
@@ -1120,7 +1122,7 @@ tellraw @a ["ID assigned to ", {"selector":"@e[tag=needs_id]"}]
 tag @e remove needs_id
 ```
 
-### using summon
+### `using summon`
 ***[LL2]*** *This feature may only be used if the project's language level is at least 2*
 Another common use of temporary tags is targeting a newly summoned entity. Trident makes this much easier by adding a function block that runs `as` the summoned entity. The selector targeting the entity with the tag is optimized whenever possible so that it only targets entities close to the summoning location.
 Syntax:
