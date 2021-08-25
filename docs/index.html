@@ -16,11 +16,21 @@
   <script>
     window.$docsify = {
       name: 'Trident',
-      repo: 'https://github.com/milkory/trident-doc-zhcn'
+      repo: 'https://github.com/milkory/trident-doc-zhcn',
+      loadSidebar: true,
+      loadNavbar: true,
+      subMaxLevel: 3,
+      pagination: {
+        previousText: 'PREVIOUS',
+        nextText: 'NEXT',
+        crossChapter: true,
+        crossChapterText: true,
+      },
     }
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
 </body>
 
 </html>
