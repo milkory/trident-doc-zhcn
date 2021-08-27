@@ -13,17 +13,17 @@ Trident 是一门由 Energyxxer 制作的 Minecraft 函数（mcfunction）语言
 ```
 datapack
 ├── data
-│   └── [namespace]
-│       ├── functions
-│       ├── advancements
-│       ├── tags
-│       │   ├── blocks
-│       │   ├── fluids
-│       │   ├── items
-│       │   ├── functions
-│       │   └── entity_types
-│       ├── loot_tables
-│       └── structures
+│   └── [namespace]
+│       ├── advancements
+│       ├── functions
+│       ├── loot_tables
+│       ├── structures
+│       └── tags
+│           ├── blocks
+│           ├── entity_types
+│           ├── fluids
+│           ├── functions
+│           └── items
 └── pack.mcmeta
 ```
 
