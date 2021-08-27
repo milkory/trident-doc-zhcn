@@ -5,3 +5,7 @@
 .line-numbers-rows {
     padding: 2.2em 5px;
 }
+
+.markdown-section pre.no-line-number {
+    overflow: auto;
+}

@@ -49,9 +49,7 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
             // file
 
             // remove trailing file marker
-            console.debug(env.content);
             env.content = env.content.replace(/(^|[^\\])[=*|]\s*$/, '$1');
-            console.debug(env.content);
             var parts = env.content.toLowerCase().replace(/\s+/g, '').split('.');
             while (parts.length > 1) {
               parts.shift();
@@ -66,5 +64,11 @@ window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook,
         }
       });
     }());
+  });
+  hook.ready(function() {
+    var list = document.getElementsByClassName("language-treeview");
+    for (let b of list) {
+      b.className = "language-treeview no-line-number";
+    }
   });
 })
