@@ -4,6 +4,4 @@
   - [入门](starter/)
   - [进阶](TODO)
 
-* [](javascript:void) <!-- 用于阻止分页 -->
-
 * [草稿](draft/draft "草稿 | Trident")
