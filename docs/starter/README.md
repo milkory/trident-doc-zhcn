@@ -10,21 +10,21 @@ Trident 是一门由 Energyxxer 制作的 Minecraft 函数（mcfunction）语言
 
 所有 Trident 代码将会被置于数据包的任意命名空间中的函数文件夹下。如果你是初学者，那么一个数据包的结构如下：
 
-```
-datapack
-├── data
-│   └── [namespace]
-│       ├── functions
-│       ├── advancements
-│       ├── tags
-│       │   ├── blocks
-│       │   ├── fluids
-│       │   ├── items
-│       │   ├── functions
-│       │   └── entity_types
-│       ├── loot_tables
-│       └── structures
-└── pack.mcmeta
+```treeview
+datapack/
+|-- data/
+|   `-- [namespace]/
+|       |-- functions/
+|       |-- advancements/
+|       |-- tags/
+|       |   |-- blocks/
+|       |   |-- fluids/
+|       |   |-- items/
+|       |   |-- functions/
+|       |   `-- entity_types/
+|       |-- loot_tables/
+|       `-- structures/
+`-- pack.mcmeta
 ```
 
 你仍然可以直接将你的 mcfunction 文件放置在 `[namespace]/functions` 文件夹中。唯一不同的是 Trident 的文件后缀名为 `.tdn` 而不是 `.mcfunction`。

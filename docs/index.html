@@ -8,10 +8,20 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
+  <style>
+    .markdown-section pre {
+      overflow: visible;
+    }
+    .line-numbers-rows {
+      padding: 2.2em 5px;
+    }
+  </style>
   <link href="//cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/prism/1.24.1/plugins/treeview/prism-treeview.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="line-numbers">
   <div id="app"></div>
   <script>
     window.$docsify = {
@@ -26,11 +36,89 @@
         crossChapter: true,
         crossChapterText: true,
       },
+      docsifyPrism:{
+        init:function() {
+        }
+      },
+      plugins: [
+        function(hook, vm) {
+          hook.init(function() {
+            (function () {
+              Prism.languages.treeview = {
+                'treeview-part': {
+                  pattern: /^.+/m,
+                  inside: {
+                    'entry-line': [
+                      {
+                        pattern: /\|--\s|├──\s/,
+                        alias: 'line-h'
+                      },
+                      {
+                        pattern: /\|\s{3}|│\s{3}/,
+                        alias: 'line-v'
+                      },
+                      {
+                        pattern: /`--\s|└──\s/,
+                        alias: 'line-v-last'
+                      },
+                      {
+                        pattern: /\s{4}/,
+                        alias: 'line-v-gap'
+                      }
+                    ],
+                    'entry-name': {
+                      pattern: /.*\S.*/,
+                      inside: {
+                        // symlink
+                        'operator': / -> /,
+                      }
+                    }
+                  }
+                }
+              };
+
+              Prism.hooks.add('wrap', function (env) {
+                if (env.language === 'treeview' && env.type === 'entry-name') {
+                  var classes = env.classes;
+
+                  var folderPattern = /(^|[^\\])\/\s*$/;
+                  if (folderPattern.test(env.content)) {
+                    // folder
+
+                    // remove trailing /
+                    env.content = env.content.replace(folderPattern, '$1');
+                    classes.push('dir');
+                  } else {
+                    // file
+
+                    // remove trailing file marker
+                    console.debug(env.content);
+                    env.content = env.content.replace(/(^|[^\\])[=*|]\s*$/, '$1');
+                    console.debug(env.content);
+                    var parts = env.content.toLowerCase().replace(/\s+/g, '').split('.');
+                    while (parts.length > 1) {
+                      parts.shift();
+                      // Ex. 'foo.min.js' would become '<span class="token keyword ext-min-js ext-js">foo.min.js</span>'
+                      classes.push('ext-' + parts.join('-'));
+                    }
+                  }
+
+                  if (env.content[0] === '.') {
+                    classes.push('dotfile');
+                  }
+                }
+              });
+              }());
+          });
+        }
+      ]
     }
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <!-- <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-prism@latest/dist/docsify-prism.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.js"></script><script src="assets/js/compoment-tdn.js"></script>
 </body>
 
 </html>
