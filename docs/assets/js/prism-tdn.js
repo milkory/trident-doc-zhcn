@@ -21,21 +21,40 @@ Prism.languages.tdn = {
     pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
     greedy: true
   },
-  important: { // TODO: keywords
-    pattern: /(execute|say|summon)/
-  },
+  important: [
+    {
+      pattern: /\bfunction\s[a-zA-z_0-9/:]+\b/,
+      inside: {
+        key: {
+          pattern: /\b[a-zA-Z0-9_]+\s*:/,
+          alias: "variable",
+          inside: {
+            punctuation: /:/
+          }
+        },
+        name: {
+          pattern: /\b(?!function\s)[a-zA-Z0-9_]/,
+          alias: "keyword"
+        },
+        punctuation: /\//
+      }
+    },
+    { // TODO: keywords
+      pattern: /(execute|function|say|summon|scoreboard|setblock)/
+    }
+  ],
   keyword: [
     {
-      pattern: /\b(as|at|run|store|result|score|if|entity)\b/
+      pattern: /\b(as|block|players|add|tp|objective|at|run|store|result|score|if|entity)\b/
     },
     {
       pattern: /\balign\s(xyz|xy|yz|xz|x|y|z)\b/,
       inside: {
         statement: /(xyz|xy|yz|xz|x|y|z)/
       }
-    }
+    },
   ],
-  placeholder: /(armor_stand)/,
+  placeholder: /\b(armor_stand|hopper|stone)\b/,
   number: {
     pattern: /[+-]?(([0-9]+)(\.[0-9]+)?|(\.[0-9]+))[bdsl]?/,
   },
@@ -44,13 +63,39 @@ Prism.languages.tdn = {
     alias: "number"
   },
   key: {
-    pattern: /\w[a-zA-Z_]+\s*:/,
+    pattern: /\b[a-zA-Z0-9_]+\s*:/,
     alias: "variable",
     inside: {
       punctuation: /:/
     }
   },
   control: {
-    pattern: /(define)/
+    pattern: /\b(define|raw|var)\b/
+  },
+  verbatim: {
+    pattern: /^\/.+/,
+    greedy: true,
+    inside: {
+      variable: {
+        pattern: /[\${}]/
+      }
+    }
+  },
+  operator: {
+    pattern: /[$=+-/*]/
+  },
+  metadata: {
+    pattern: /^@\s.*/m,
+    alias: "entity",
+    greedy: true,
+    inside: {
+      key: {
+        pattern: /\b[a-zA-Z0-9_]+\s*:/,
+        alias: "variable",
+        inside: {
+          punctuation: /:/
+        }
+      }
+    }
   }
 }
