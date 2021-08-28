@@ -25,17 +25,24 @@
       loadNavbar: true,
       subMaxLevel: 3,
       auto2top: true,
+      alias: {
+        "/~(.*)": '/_tpl/$1',
+      },
       pagination: {
         previousText: 'PREVIOUS',
         nextText: 'NEXT',
         crossChapter: true,
         crossChapterText: true,
-      }
+      },
+      remoteMarkdown: {
+        tag: '~',
+      },
     }
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="assets/js/prism-treeview.js"></script>
+  <script src="assets/js/docsify-remote-markdown.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-prism@latest/dist/docsify-prism.min.js"></script>
   <script src="//cdn.bootcdn.net/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.js"></script>

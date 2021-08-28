@@ -6,10 +6,12 @@
 
 以下是当前可用的语言等级以及它们所包含的特性：
 
-1. 基本的函数预处理功能（原版命令、[变量](TODO)、[计分板项目](TODO)、[自定义实体](TODO)、简单的[自定义物品](TODO)等）
+1. 基本的函数预处理功能（原版命令、[变量][]、[记分板项目][]、[自定义实体][]、简单的[自定义物品][]等）
 
 2. 基本的 Trident 命令（[`tag update`](TODO)）和 [`using` 指令](TODO)。这些命令或指令在编译时会输出为多行命令，并且可能还会有额外的短函数生成用以实现它们。
 
-3. [Custom item events]() and [game logger](). These will usually create several functions with many commands each, which may introduce some execution time and space overhead. However, these functions will only generate once the first usage of the feature is found, and further uses of the feature will either reference a generated function or append to one.
+3. [自定义物品事件][]和[游戏日志][]。这些功能往往会创建数个包含大量命令的函数，并需要更多的命令执行时间和空间堆占用。不过，这些函数只会在有需要时被生成，多次使用这些功能会直接引用或加入一个已生成的函数。
 
-The language level can be specified using the `language-level` property in the project configuration file .tdnproj, or per file, using the `@ language_level` [file directive](TODO).
+语言等级可以在项目设置文件（`.tdnproj`）中使用 `language-level` 属性进行设置；同时，您也可以在文件的开头使用 `@ language_level` [文件属性][]特别指定该文件的语言等级。
+
+[~](/~link)
