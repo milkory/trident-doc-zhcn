@@ -8,12 +8,12 @@
   - [记分板项目](starter/objective "记分版项目 | Trident")
   - [直译命令](starter/verbatim_command "直译命令 | Trident")
   - [内部函数](starter/inner_function "内部函数 | Trident")
-  - [实体组件](starter/entity_component "实体组件 | Trident")
   - [抽象实体事件](starter/abstract_entity_event "抽象实体事件 | Trident")
   - [指令](starter/instruction "指令 | Trident")
 
 
 * <span style="font-size: 1.17em">**自定义**</span>
   - [自定义对象](starter/custom_object "自定义对象 | Trident")
-  - [自定义实体](starter/custom_entity "自定义实体 | Trident")
+  - [**自定义实体**](starter/custom_entity "自定义实体 | Trident")
+    - [实体组件](starter/entity_component "实体组件 | Trident")
   - [自定义物品](starter/custom_item "自定义物品 | Trident")
