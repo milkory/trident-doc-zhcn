@@ -1,7 +1,7 @@
 # 自定义对象
 Trident allows you to abstract the process of creating a custom entity or item, using its custom object features. This section will describe features common to both entity and items.
 
-## 函数内部对象
+## 对象内部函数
 Inside a custom entity or item body you may define functions that are logically tied to it.
 
 ### 对象的文件夹

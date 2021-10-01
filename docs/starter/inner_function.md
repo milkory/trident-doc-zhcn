@@ -6,7 +6,7 @@
 您可以通过 `define` 指令定义一个带有名称的内部函数，他们的名称是一个资源路径，既可以相对于父函数，也可以是一个非 `minecraft` 命名空间下的绝对路径。示例：
 
 ```tdn
-# 路径 - tdndemo:inner_functions.tdn
+# 文件 - tdndemo:inner_functions.tdn
 define function inner {
       if block ~ ~ ~ minecraft:hopper summon armor_stand ~ ~ ~ {Tags:["block_marker", "new"], Invisible:1b, Marker:1b}
       scoreboard players add BLOCKS_CHECKED global 1
@@ -18,7 +18,7 @@ define function inner {
 您可以通过 `function` 命令定义一个内部函数，它会在被创建后立即被调用。示例：
 
 ```tdn
-# 路径 - tdndemo:inner_functions.tdn
+# 文件 - tdndemo:inner_functions.tdn
 function inner {
       if block ~ ~ ~ minecraft:hopper summon armor_stand ~ ~ ~ {Tags:["block_marker", "new"], Invisible:1b, Marker:1b}
       scoreboard players add BLOCKS_CHECKED global 1
@@ -31,7 +31,7 @@ function inner {
 您也可以在此省略函数名称：
 
 ```tdn
-# 路径 - tdndemo:inner_functions.tdn
+# 文件 - tdndemo:inner_functions.tdn
 function {
       setblock ~ ~ ~ stone
 }
