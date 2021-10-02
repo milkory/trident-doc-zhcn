@@ -1,6 +1,9 @@
 # 隐式 `execute`
 
-Trident lets you omit `execute` and `run` keywords from your commands entirely. The previous snippet can be simplified to the following command:
+Trident 允许您特定情况下省略 [`execute`][] 和 [`run`][] 关键字。
+
+例如，[介绍#文件格式](/starter/#文件格式)中的命令可以被简化为如下命令：
+
 ```tdn
 as @a at @s align xyz
     summon armor_stand ~ ~ ~ {
@@ -13,9 +16,14 @@ as @a at @s align xyz
     }
 ```
 
-Note that this comes with a limitation: Omitting the `execute` and `run` keywords will require you to follow up with a command; If you need to store a value obtained from the `if` or `unless`  subcommand alone, you must include `execute`. Example:
+注意，只有当您需要运行命令（即使用 `run` 子命令时），`execute` 才可以被省略。也就是说，当您需要通过 `if` 或 `unless` 存储数据时，不能省略 `execute` 关键字。
+
+示例：
+
 ```tdn
 execute store result score PLAYER_COUNT global if entity @a
 ```
 
-*The `execute` keyword cannot be omitted in this case!*
+此处，不能省略 `execute` 关键字。
+
+[~](/~clink)
