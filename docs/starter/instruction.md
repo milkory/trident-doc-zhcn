@@ -15,7 +15,7 @@ log info "Added  " + i + " to the list"
 
 ## `using`
 ### `using tag`
-***[LL2]*** *This feature may only be used if the project's language level is at least 2*
+*__[LL2]__ This feature may only be used if the project's language level is at least 2*
 Tags on entities are often used temporarily to target a specific entity without changing the context. This requires adding and removing the tag from the entity. Trident adds an instruction that makes this process easier. The using tag instruction runs a specific block after adding a tag to the entity given, and automatically adds the tag remove command at the end. Note that the tag is removed from all entities at the end, so don't use a tag that is used permanently somewhere else.
 Syntax:
 ```tdn
@@ -48,7 +48,7 @@ tag @e remove needs_id
 ```
 
 ### `using summon`
-***[LL2]*** *This feature may only be used if the project's language level is at least 2*
+*__[LL2]__ This feature may only be used if the project's language level is at least 2*  
 Another common use of temporary tags is targeting a newly summoned entity. Trident makes this much easier by adding a function block that runs `as` the summoned entity. The selector targeting the entity with the tag is optimized whenever possible so that it only targets entities close to the summoning location.
 Syntax:
 ```tdn

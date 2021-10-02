@@ -110,7 +110,7 @@ There are no item equivalents of entities' wildcard entities and entity componen
 Custom items support inner functions, as described in the [Object Inner Functions]() section.
 
 ### 物品事件函数
-***[LL3]*** *This feature may only be used if the project's language level is 3*  
+*__[LL2]__ This feature may only be used if the project's language level is 3*  
 
 Within custom item bodies, you may specify that an inner function should run whenever a scoreboard criteria event is fired from that item. This is done via the `on` keyword, followed by the type of event it should be fired from.
 Those events are: `used`, `dropped`, `picked_up`, `broken` and `crafted` (crafted is not supported for custom items, only default items support it). The actions that trigger these events may vary for each item, depending on how the corresponding scoreboard objective criterion behaves.

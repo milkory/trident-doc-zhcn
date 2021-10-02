@@ -164,7 +164,7 @@ data modify entity @s HandItems[0] set value {id:"minecraft:bow",Count:1b}
 ```
 
 ### `tag update`
-***[LL2]*** *This feature may only be used if the project's language level is at least 2*
+*__[LL2]__ This feature may only be used if the project's language level is at least 2*
 Trident adds a shorthand for removing a tag from all entities and reapplying it only to specific entities. Example:
 ```tdn
 tag @e[nbt={OnGround:1b}] update onGround
@@ -207,7 +207,7 @@ if entity @e[tag=!assigned] function try_assign_3
 It's advised you only use this when you expect the condition to be invalidated somewhere in the block to stop the other commands from running. If you want all the commands in the block to run if the condition is met, consider using functions instead.
 
 ### `gamelog`
-***[LL3]*** *This feature may only be used if the project's language level is 3*
+*__[LL2]__ This feature may only be used if the project's language level is 3*
 Trident adds a runtime equivalent of the [log instruction](). This lets you send debug messages to select people, containing information about the execution context of the command. The syntax is `gamelog <info|debug|warning|error|fatal> <value>`.
 The different severities correspond to an integer, and a message of a certain severity will only be shown to players whose `tdn_logger` score is at least the severity number.
 This is a table showing which type of log each player sees, depending on the `tdn_logger` score:

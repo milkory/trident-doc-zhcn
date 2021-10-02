@@ -1,3 +1,5 @@
+// Origin: https://github.com/JerryC8080/docsify-remote-markdown
+
 function getFile(target, vm) {
   const reg = new RegExp("https?://")
   if (!target.match(reg)) {
