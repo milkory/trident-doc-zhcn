@@ -1,8 +1,11 @@
 # 自定义实体
 
-Trident lets you simplify the process of creating "new" entity types. A custom entity starts with a definition specifying its base type (what vanilla entity type it uses), its default NBT data, its passengers, and functions it may want to run. After declaration, you can use its name in place of the `summon` command entity type, or `type`= selector argument. Here's an example declaration:
+Trident 允许你简化“创建”一个实体类型的过程，一个**自定义实体（Custom Entity）**的定义包括它的基本实体类型（即该实体所基于的实体）、默认 NBT 数据、乘客，以及它将要运行的函数。完成定义后，你可以在 `summon` 命令中直接使用它的名称作为实体类型，也可以用 `type=` 目标选择器参数进行选择。
+
+以下是一个定义的示例：
+
 ```tdn
-# file: mypack:entities/guard.tdn
+# 文件 - mypack:entities/guard.tdn
 define entity guard minecraft:iron_golem {
 
     default name [
@@ -37,18 +40,23 @@ define entity guard minecraft:iron_golem {
     }
 }
 ```
-That declaration defines an entity named 'guard' that is based on an iron golem. It defines a default name, default NBT and health that will be assigned upon summoning.
-As well as these default values, the guard declaration also defines two functions: `tick` and `animation/hurt`.
-The `ticking` keyword before the function tells Trident to run that function on every entity of the type `guard`, every tick (using `as @e[...] at @s`).
 
-Inside the `tick` function, it calls another function called `animation/hurt`. Notice how that function is accessed via the `this` identifier, which is set to whatever custom entity type being declared. (see [Interpolation Values > Data Types > Custom Entities]())
+以上声明中定义了一个名为 `guard` 的实体，它基于原版中的铁傀儡，包含一个默认名称、默认 NBT 和默认生命值，该实体被生成时将会附带这些属性。
 
-To spawn this custom entity later in the program, all you need is a summon command with an interpolation block retrieving the custom entity. Example:
+除了这些默认属性，`guard` 的声明还定义了两个函数：`tick` 和 `animation/hurt`。
+
+函数定义前的 `ticking` 修饰符表示这个函数每刻都会被运行一次（使用 `as @e[...] at @s`）。
+
+在 `tick` 函数中，它又调用了另一个函数 `animation/hurt`。请注意，这个函数是通过 `this` 标识符调用的，它会被设置为正在被声明的这个实体。（见 [插值#自定义实体](/TODO)）
+
+要在之后的程序中生成这个自定义实体，你只需要使用 `summon` 命令和一个指向该实体的插值块。
+
+示例：
 
 ```tdn
 summon $guard ~ ~ ~
 
-# Equivalent to:
+# 等同于以下代码
 summon minecraft:iron_golem ~ ~ ~ {
     Tags: ["trident-entity.mypack.guard"],
     CustomName: '["",{"text":"Guard","color":"red"},"[",{"text":"Lv. ","color":"gold"},{"text":"1","color":"yellow"},"]"]',
@@ -62,62 +70,83 @@ summon minecraft:iron_golem ~ ~ ~ {
 }
 ```
 
-Trident uses tags to distinguish custom entity types apart. They are `trident-entity`, followed by the namespace it was declared in, and the name of the custom entity, all separated by dots.
+Trident 使用记分板标签来分辨不同的自定义实体，这些标签的格式是 `trident-entity.(namespace).(name)`，如本例中定义的守卫者实体都会在生成时具有 `trident-entity.mypack.guard` 标签。
 
 ## 自定义实体声明
 
-Custom entities are defined by two identifying properties: a name, and a base type. Depending on whether these properties are set, the custom entity will behave differently.
+自定义实体声明包含**名称**和**基本实体类型**两个基本属性。然而，这些属性都是可选的，不同的声明会对它们的行为造成不同的影响。
 
-1.  **Named custom entities** (Has a name and a base type)
-    Named custom entities define a new spawnable entity that doesn't alter the behavior of other vanilla entities. The declaration header looks like this:
-    ```tdn
-    define entity <name> <base_type>
-    ```
-    Example:
-    ```tdn
-    define entity guard minecraft:iron_golem
-    ```
-    Note: The base type can also be another named custom entity. Example:
-    ```tdn
-    define entity town_guard $guard
-    ```
+### 完全自定义实体
 
-2.  **Default custom entities** (Has no name but has a base type)
-    Default custom entities serve as a way to add functionality to a specific vanilla entity type. The declaration header looks like this:
-    ```tdn
-    define entity default <base_type>
-    ```
-    Example:
-    ```tdn
-    define entity default minecraft:iron_golem
-    ```
-    Behavior defined inside this example entity declaration will affect all iron golems.
+**完全自定义实体（Named Custom Entity）**拥有名称和基本实体类型，是一个全新的可生成实体，且不会改变任何原版实体的行为。
 
-3.  **Wildcard custom entities** (Has no name and no base type)
-    Wildcard custom entities serve as a way to add functionality to all entities.
-    The declaration header looks like this:
-    ```tdn
-    define entity default *
-    ```
+声明头如下所示：
 
-4.  **Entity Components** (Has a name but no base type)
-    Entity components serve as a way to add functionality to specific entities, regardless of their entity type. More about Entity Components in another section.
+```tdn
+define entity <name> <base_type>
+```
+
+示例：
+
+```tdn
+define entity guard minecraft:iron_golem
+```
+
+基本实体类型也可以是另一个完全自定义实体。
+
+示例：
+
+```tdn
+define entity town_guard $guard
+```
+
+### 通用自定义实体
+**通用自定义实体（Default Custom Entity）**只拥有基本实体类型，用以向指定原版实体添加功能。
+
+声明头如下所示：
+
+```tdn
+define entity default <base_type>
+```
+
+示例：
+
+```tdn
+define entity default minecraft:iron_golem
+```
+
+定义在该自定义实体声明下的行为将会影响所有的铁傀儡。
+
+### 全局自定义实体
+**全局自定义实体（Wildcard Custom Entity）**不具备任何一项基本属性，用以向所有原版实体添加功能，也可被视为一种更通用的[通用自定义实体](#通用自定义实体)变种。
+
+声明头如下所示：
+
+```tdn
+define entity default *
+```
+
+### 实体组件
+> 主条目：[实体组件][]
+
+实体组件只拥有名称，用以向指定实体添加功能，且通常可以在任何实体类型上使用。
 
 ## 自定义实体结构体
-- Variable Declarations.
-- `default name <text_component>`
-    (Named entities and components only)
-    Changes the entity's base NBT to contain the given `CustomName`.
-- `default nbt <tag_compound>`
-    (Named entities and components only)
-    Changes the entity's base NBT to contain the tags in the given compound (via a merge operation).
-- `default health <real>`
-    (Named entities and components only)
-    Changes the entity's base NBT to reflect the given max health (Changes the Health tag, as well as the `generic.maxHealth attribute`).
-- `default passengers [<new_entity_literal>, <new_entity_literal>, ...]`
-    (Named entities and components only)
-    Adds the given entities as passengers of this entity. [See Command Syntax Additions > New-Entity literal]().
-    Example:
+### 属性声明
+
+- `default name <text_component>`（仅完全自定义实体和实体组件）  
+    指定该实体的名称；即将指定的 `CustomName` 标签添加到其默认 NBT 中。
+
+- `default nbt <tag_compound>`（仅完全自定义实体和实体组件）
+    指定该实体的默认 NBT 标签。
+
+- `default health <real>`（仅完全自定义实体和实体组件）
+    指定该实体的默认生命值，同时也会修改其最大生命值；即将指定的 `Health` 标签和 `generic.maxHealth` 属性添加到其默认 NBT 中。
+
+- `default passengers [<new_entity_literal>, <new_entity_literal>, ...]`（仅完全自定义实体和实体组件）
+    添加指定的实体为该实体的乘客。（见 [命令语法增强#实体生成字面量](/TODO)）
+
+    示例:
     ```tdn
     define entity free_block minecraft:armor_stand {
         default passengers [
@@ -127,15 +156,23 @@ Custom entities are defined by two identifying properties: a name, and a base ty
         # ...
     }
     ```
-- Inner functions (See next section)
+
+### 内部函数
+> 主条目：[自定义实体#自定义实体函数](#自定义实体函数)
 
 ## 自定义实体函数
-Custom entities and entity components support inner functions, as described in the [Object Inner Functions]() section.
+> 主条目：[自定义对象#对象内部函数](/starter/custom_object#对象内部函数)
+
+自定义实体和实体组件支持使用[内部函数][]。
+
 ### 循环函数
-Within custom entity bodies, you may specify that an inner function should run every tick on entities of that type. This is done via the `ticking` keyword before the `function` keyword.
-Example:
+
+在这自定义实体结构体中，你可以通过 `ticking` 修饰符以让内部函数每刻通过该实体的实例运行一次。
+
+示例：
+
 ```tdn
-# file: mypack:entities/guard.tdn
+# 文件 - mypack:entities/guard.tdn
 define entity guard minecraft:iron_golem {
     ticking function tick {
         if entity @s[nbt={HurtTime:10s}] function ${this["animation/hurt"]}
@@ -144,15 +181,19 @@ define entity guard minecraft:iron_golem {
     }
 }
 ```
-That roughly translates to the following command in a Trident-generated function tagged with `#minecraft:tick`:
+
+它大致会生成如下命令，同时带有 `#minecraft:tick` 标签：
+
 ```tdn
 as @e at @s if entity @s[type=$guard] function mypack:entities/guard/tick
 ```
 
-You may also specify other modifiers that should be added in that command. Extra modifiers go after the `ticking` keyword and before the `function` keyword.
-Example:
+您也可以在此使用 `execute` 的子命令，这些子命令应该在 `ticking` 和 `function` 两个关键字之间。
+
+示例：
+
 ```tdn
-# file: mypack:entities/guard.tdn
+# 文件 - mypack:entities/guard.tdn
 define entity guard minecraft:iron_golem {
     ticking if entity @s[nbt={HurtTime:10s}] function animation/hurt {
         particle damage_indicator ~ ~ ~ 0.5 0.5 0.5 0.5 8
@@ -162,21 +203,31 @@ define entity guard minecraft:iron_golem {
     }
 }
 ```
-That roughly translates to the following command:
+
+它大致会生成如下命令：
+
 ```tdn
 as @e at @s if entity @s[type=$guard] if entity @s[nbt={HurtTime:10s}] function mypack:entities/guard/animation/hurt
 ```
-This is done for the sake of optimization with several custom entity types, so that all entities are only iterated through once per tick. The result is optimized more if there is only one ticking entity function.
 
-**NOTE: Since this uses the `@e` selector to iterate through entities, this will not run for dead players.**  
-You may also specify an interval between executions. Write a time literal right after the 'ticking' keyword.
-Example:
+使用 `ticking` 修饰符的主要是为了优化命令执行性能，我们使得所有实体每刻都只会被迭代一次，然后通过 `if entity @s` 检测并执行不同的函数。我们建议您每个自定义实体都只使用一个循环函数，这样优化效果会更好。
+
+!> Trident 会使用 `@e` 选择器来迭代实体，所以死亡的玩家不会被检测到。
+
+您还可以指定循环间隔，只需要在 `ticking` 之后添加一个时间量。
+
+示例：
+
 ```tdn
-# file: mypack:entities/guard.tdn
+# 文件 - mypack:entities/guard.tdn
 define entity guard minecraft:iron_golem {
     ticking 5s function {
         playsound minecraft:block.anvil.use master @a ~ ~ ~ 1.0 2.0 0.0
     }
 }
 ```
-This will create a self-scheduling function tagged with `#minecraft:tick`, one for each unique time interval used in the project.
+
+这会在指定时间的全局计划函数中添加该函数的引用，它们会通过 [`schedule`][] 命令实现循环；而没有设定时间的循环函数则会使用 `#minecraft:tick` 标签实现循环。
+
+[~](/~link)
+[~](/~clink)
