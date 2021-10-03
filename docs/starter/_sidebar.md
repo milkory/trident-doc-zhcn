@@ -1,5 +1,7 @@
 * [首页](/ "首页 | Trident")
 
+- <span style="display: none;">[返回](javascript:window.history.back())</span>
+
 * <span class="sidebar-title">**入门**</span>
   - [介绍](starter/ "介绍 | Trident")
   - [文件属性](starter/file_directive "文件属性 | Trident")
@@ -17,6 +19,7 @@
   - [🚧 自定义物品](starter/custom_item "自定义物品 | Trident")
 
 * <span class="sidebar-title">**独有特性**</span>
-  - [🚧 指令](starter/instruction "指令 | Trident")
+  - [🚧 命令语法增强](starter/command_syntax_additions "命令语法增强 | Trident")
 
-* 未完待续
+* <span class="sidebar-title">**继续前进**</span>
+  - [进阶](advanced/)
