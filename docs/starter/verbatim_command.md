@@ -6,7 +6,7 @@
 /futurecommand @a minecraft:future_block
 ```
 
-您也可以在直译命令中使用[插值块][]：
+您也可以在直译命令中使用[插值块]：
 
 ```tdn
 var raw_command = "futurecommand @a"

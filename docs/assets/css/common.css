@@ -9,3 +9,7 @@
 .hatnote {
     color: #7f8c8d;
 }
+
+.markdown-section code * {
+    color: #e96900;
+}

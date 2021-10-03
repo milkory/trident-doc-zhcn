@@ -1,6 +1,6 @@
 # 隐式 `execute`
 
-Trident 允许您特定情况下省略 [`execute`][] 和 [`run`][] 关键字。
+Trident 允许您特定情况下省略 [`execute`][] 和 [`run`] 关键字。
 
 例如，[介绍#文件格式](/starter/#文件格式)中的命令可以被简化为如下命令：
 
