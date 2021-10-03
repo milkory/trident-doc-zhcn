@@ -10,11 +10,13 @@
   - [内部函数](starter/inner_function "内部函数 | Trident")
 
 * <span class="sidebar-title">**自定义**</span>
-  - [自定义对象](starter/custom_object "自定义对象 | Trident")
+  - [🚧 自定义对象](starter/custom_object "自定义对象 | Trident")
   - [**自定义实体**](starter/custom_entity "自定义实体 | Trident")
-    - [实体组件](starter/entity_component "实体组件 | Trident")
-    - [抽象实体事件](starter/abstract_entity_event "抽象实体事件 | Trident")
-  - [自定义物品](starter/custom_item "自定义物品 | Trident")
+    - [🚧 实体组件](starter/entity_component "实体组件 | Trident")
+    - [🚧 抽象实体事件](starter/abstract_entity_event "抽象实体事件 | Trident")
+  - [🚧 自定义物品](starter/custom_item "自定义物品 | Trident")
 
 * <span class="sidebar-title">**独有特性**</span>
-  - [指令](starter/instruction "指令 | Trident")
+  - [🚧 指令](starter/instruction "指令 | Trident")
+
+* 未完待续
