@@ -17,6 +17,6 @@
 
 * <span class="sidebar-title">**面向对象**</span>
   - [🚧 类与对象](advanced/class_and_object "类与对象 | Trident")
-  - [🚧 继承](advanced/extending "继承 | Trident")
+  - [🚧 继承与泛型](advanced/inheritance_and_generics "继承与泛型 | Trident")
 
 - [🚧 原生库](advanced/native_library "原生库 | Trident")
